@@ -18,11 +18,23 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
+	"github.com/laidbackware/vmd/api"
+	"github.com/laidbackware/vmd/downloader"
+	"github.com/laidbackware/vmd/manifest"
+	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/spf13/cobra"
 )
 
-var fileName string
+var(
+	manifestFile string
+	fileName string
+	acceptEula bool
+	outputDir string
+)
+	
 
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
@@ -30,29 +42,70 @@ var downloadCmd = &cobra.Command{
 	Short: "Download file from VMware",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("download called")
+		validateCredentials(cmd)
+		validateOutputDir()
+		manifestWorkflow := validateDownloadFlags(cmd)
+		err := api.EnsureLogin(username, password)
+		handleErrors(err)
+		if manifestWorkflow {
+			downloadFromManifest()
+		} else {
+			fmt.Println("Collecting download payload")
+			downloadPayloads, err := api.FetchDownloadPayload(slug, subProduct, version, fileName, username, password, acceptEula)
+			handleErrors(err)
+			downloadFiles(downloadPayloads)
+		}
 	},
+}
+
+func downloadFromManifest() {
+	fmt.Printf("Opening manifest file: %s\n", manifestFile)
+	manifestArray, err := manifest.ProcessFile(manifestFile)
+	if err == manifest.ErrorFileDoesNotExist {
+		fmt.Printf("File %s does not exist", manifestFile)
+		os.Exit(1)
+	} else if err == manifest.ErrorInvalidSpec {
+		os.Exit(1)
+	} else if err != nil {
+		fmt.Printf("Parsing file failed with error: %e\n", err)
+		os.Exit(1)
+	}
+
+	var allPayloads [][]sdk.DownloadPayload
+	for _, manifestSpec := range manifestArray {
+		for _, glob := range manifestSpec.FilenameGlobs {
+			fmt.Printf("Collecting download payload for [%s] [%s] [%s] [%s]\n", manifestSpec.Slug, manifestSpec.SubProduct, 
+				manifestSpec.Version, glob)
+			downloadPayloads, err := api.FetchDownloadPayload(manifestSpec.Slug, manifestSpec.SubProduct, manifestSpec.Version, 
+				glob, username, password, acceptEula)
+			handleErrors(err)
+			allPayloads = append(allPayloads, downloadPayloads)
+		}
+	}
+
+	for _, downloadPayloads := range allPayloads {
+		downloadFiles(downloadPayloads)
+	}
+
+}
+
+func downloadFiles(downloadPayloads []sdk.DownloadPayload) {
+		for _, downloadPayload := range downloadPayloads {
+			authorizedDownload, err := api.FetchDownloadLink(downloadPayload, username, password)
+			handleErrors(err)
+			authorizedDownload.FileName = filepath.Join(outputDir, authorizedDownload.FileName)
+			err = downloader.TriggerDownload(authorizedDownload)
+			handleErrors(err)
+		}
 }
 
 func init() {
 	rootCmd.AddCommand(downloadCmd)
 	downloadCmd.Flags().StringVarP(&slug, "product", "p", "", "Product code")
 	downloadCmd.Flags().StringVarP(&subProduct, "subproduct", "s", "", "Sub Product code")
-	downloadCmd.Flags().StringVarP(&version, "version", "v", "", "Version string")
-	downloadCmd.Flags().StringVarP(&fileName, "filename", "f", "", "Filename string")
-	downloadCmd.MarkFlagRequired("product")
-	downloadCmd.MarkFlagRequired("subproduct")
-	downloadCmd.MarkFlagRequired("version")
-	downloadCmd.MarkFlagRequired("filename")
-
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// downloadCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// downloadCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	downloadCmd.Flags().StringVarP(&version, "version", "v", "", "Version string. Can contain a glob.")
+	downloadCmd.Flags().StringVarP(&fileName, "filename", "f", "", "Filename string. Can contain one or more globs.")
+	downloadCmd.Flags().StringVarP(&manifestFile, "manifest", "m", "", "Filename of the manifest containing details of what to download")
+	downloadCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Directory to download files to")
+	downloadCmd.Flags().BoolVarP(&acceptEula, "accepteula", "a", false, "Filename string")
 }

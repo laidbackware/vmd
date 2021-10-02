@@ -14,4 +14,35 @@ export_errors() {
 	export ERRORNOTENTITLED="You are not entitled to download this sub-product"
 	export ERRORNOVERSINGLOB="No version glob provided"
 	export ERRORMULTIPLEVERSIONGLOB="Multiple version globs not supported"
+	export ERRORAUTHENTICATIONFAILURE="Authentication failure. Check your username and/or password!"
+}
+
+export_yamls() {
+	export INVALID_YAML_MISSING_FIELD="---
+product: vmware_tools
+subproduct: vmtools
+version: \"11.*\"
+"
+
+	export INVALID_YAML_INVALID_TYPE="---
+product: vmware_tools
+subproduct: vmtools
+version: 11.0
+filename_globs: INVALID
+"
+
+	export VALID_YAML="---
+product: vmware_tools
+subproduct: vmtools
+version: \"11.*\"
+filename_globs:
+  - VMware-Tools-darwin-*.tar.gz
+  - VMware-Tools-darwin-*.zip
+---
+product: vmware_tools
+subproduct: vmtools
+version: \"10.*\"
+filename_globs:
+  - VMware-Tools-other-*.tar.gz
+---"
 }

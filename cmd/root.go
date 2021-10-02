@@ -24,16 +24,19 @@ import (
 	// "github.com/spf13/viper"
 )
 
-var cfgFile string
+var username string
+var password string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
+	Version: "0.0.1",
 	Use:   "vmd",
 	Short: "Download binaries from customerconnect.vmware.com",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. Example usage:
-
-vmd get files -p vmware_tools -s vmtools -v 11.3.0`,
+	Long: `vmd downloads binaries from customerconnect.vmware.com
+	
+Example usage:
+	vmd download -p vmware_tools -s vmtools -v 11.3.0 -f VMware-Tools-darwin-*.zip --acceptEula
+`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -49,11 +52,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.vmd.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().StringVar(&username, "user", "", "Username used to authenticate [$VMD_USER]")
+	rootCmd.PersistentFlags().StringVar(&password, "pass", "", "Password used to authenticate [$VMD_PASS]")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -71,6 +71,10 @@ func initConfig() {
 // 		viper.SetConfigType("yaml")
 // 		viper.SetConfigName(".vmd")
 // 	}
+	// viper.SetEnvPrefix("vmd") // will be uppercased automatically
+	// viper.BindEnv("user")
+	// viper.BindEnv("password")
+	
 
 // 	viper.AutomaticEnv() // read in environment variables that match
 

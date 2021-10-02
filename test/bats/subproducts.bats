@@ -7,7 +7,7 @@ setup() {
   export_errors
 }
 
-@test "get subproducts with successfully" {
+@test "get subproducts successfully" {
   run $VMD_CMD get subproducts -p vmware_tools
   echo $output
   [[ "$output" == *"VMware Tools"* ]]

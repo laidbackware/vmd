@@ -7,7 +7,7 @@ list products
 list subproducts -p
 list versions -p -s
 list files -p -s -v
-download -p -s -v -g -a
+download -p -s -v -f -a
 download -f -a
 
 go get -u github.com/laidbackware/vmware-download-sdk

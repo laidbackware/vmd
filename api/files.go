@@ -11,8 +11,8 @@ type Availability struct {
 	EligibleToDownload bool
 }
 
-func ListFiles(slug, subProduct, version string) (data [][]string, availability Availability, err error) {
-	err = ensureLogin()
+func ListFiles(slug, subProduct, version, username, password string) (data [][]string, availability Availability, err error) {
+	err = EnsureLogin(username, password)
 	if err != nil {return}
 	var downloadGroup, productID string
 	downloadGroup, productID, err = authenticatedClient.GetDlgProduct(slug, subProduct, version)

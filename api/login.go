@@ -8,34 +8,36 @@ import (
 
 	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/orirawlings/persistent-cookiejar"
+	// "github.com/spf13/viper"
 )
 
 var authenticatedClient *sdk.Client
+var jar *cookiejar.Jar
 
-func ensureLogin() (err error) {
+func EnsureLogin(username, password string) (err error) {
 	if authenticatedClient == nil {
-		var jar *cookiejar.Jar
 		// Store cookies under the user profile
 		jar, err = cookiejar.New(&cookiejar.Options{
-			Filename:              filepath.Join(homeDir(), ".vmware.cookies"),
+			Filename:              filepath.Join(homeDir(), ".vmd.cookies"),
 			PersistSessionCookies: true,
 		})
 		if err != nil {return}
-		user, pass := mustEnv("VMW_USER"), mustEnv("VMW_PASS")
 		fmt.Println("Logging in...")
-		authenticatedClient, err = sdk.Login(user, pass, jar)
+		authenticatedClient, err = sdk.Login(username, password, jar)
 		if err == nil {
 			err = jar.Save()
 		}
-	}
-	return
-}
+	} else {
+		// If tokens are still valid leave existing authenticatedClient in place
+		err = authenticatedClient.CheckLoggedIn()
+		if err == nil {return}
 
-func mustEnv(k string) string {
-	if v, ok := os.LookupEnv(k); ok {
-		return v
-	}
-	return ""
+		authenticatedClient, err = sdk.Login(username, password, jar)
+		if err == nil {
+			err = jar.Save()
+		}
+	} 
+	return
 }
 
 // homeDir returns the OS-specific home path as specified in the environment.

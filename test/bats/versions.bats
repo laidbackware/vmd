@@ -7,7 +7,7 @@ setup() {
   export_errors
 }
 
-@test "get versions with successfully" {
+@test "get versions successfully" {
   run $VMD_CMD get versions -p vmware_tools -s vmtools
   echo $output
   [[ "$output" == *"11.0.0"* ]]

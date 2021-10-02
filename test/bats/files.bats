@@ -7,7 +7,7 @@ setup() {
   export_errors
 }
 
-@test "get files with successfully" {
+@test "get files successfully" {
   run $VMD_CMD get files -p vmware_tools -s vmtools -v 11.3.0
   echo $output
   [[ "$output" == *"Eula Accepted:"* ]]
@@ -34,5 +34,13 @@ setup() {
   run $VMD_CMD get files -p vmware_tools -s vmtools -v INVALID
   echo $output
   [[ "$output" == *"$ERRORINVALIDVERSION"* ]]
+  [ "$status" -eq 1 ]
+}
+
+@test "get files with invalid credentials" {
+  $VMD_CMD logout
+  run $VMD_CMD get files -p vmware_tools -s vmtools -v INVALID --user invalid --pass invalid
+  echo $output
+  [[ "$output" == *"$ERRORAUTHENTICATIONFAILURE"* ]]
   [ "$status" -eq 1 ]
 }
