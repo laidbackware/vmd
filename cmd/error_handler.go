@@ -33,6 +33,8 @@ func handleErrors(err error){
 			fmt.Fprintln(os.Stderr, "Authentication failure. Check your username and/or password!")
 		} else if err == sdk.ErrorConnectionFailure {
 			fmt.Fprintln(os.Stderr, "Unable to connect to customerconnect.vmware.com. Check your proxy settings.")
+		} else {
+			fmt.Fprintf(os.Stderr, "%e\n", err)
 		}
 		os.Exit(1)
 	}

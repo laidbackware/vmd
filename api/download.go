@@ -6,8 +6,7 @@ import (
 )
 
 func FetchDownloadPayload(slug, subProduct, version, fileName, username, password string, acceptEula bool) (data []sdk.DownloadPayload, err error) {
-	err = EnsureLogin(username, password)
-	if err != nil {return}
+	if err = EnsureLogin(username, password); err != nil {return}
 
 	data, err = authenticatedClient.GenerateDownloadPayload(slug, subProduct, version, fileName, acceptEula)
 	if err != nil {return}

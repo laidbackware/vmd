@@ -17,32 +17,24 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"github.com/laidbackware/vmd/api"
-	"github.com/laidbackware/vmd/presenters"
+	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
-var slug string
-
-// subproductsCmd represents the subproducts command
-var subproductsCmd = &cobra.Command{
-	Use:   "subproducts",
-	Aliases: []string{"s"},
-	Short: "List sub-products",
-	Long: "List sub-products for a specified product",
-	Example: getSubProductsUsage,
+// productsCmd represents the products command
+var manifestExampleCmd = &cobra.Command{
+	Use:   "manifestexample",
+	Short: "Display an example download manifest",
+	Long: "Display an example download manifest",
 	Run: func(cmd *cobra.Command, args []string) {
-		products, err := api.ListSubProducts(slug)
-		if err != nil {
-			handleErrors(err)
-		}
-		headings := []string{"Sub-Product Code", "Description"}
-		presenters.RenderTable(headings, products)
+		fmt.Println(exampleManifest)
+
 	},
+	DisableFlagsInUseLine: true,
 }
 
 func init() {
-	getCmd.AddCommand(subproductsCmd)
-	subproductsCmd.Flags().StringVarP(&slug, "product", "p", "", "Product code")
-	subproductsCmd.MarkFlagRequired("product")
+	getCmd.AddCommand(manifestExampleCmd)
+	manifestExampleCmd.ResetFlags()
 }

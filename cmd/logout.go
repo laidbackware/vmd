@@ -30,7 +30,7 @@ import (
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
 	Short: "Remove all session cookies",
-	Long: ``,
+	Long: "Remove all session cookies by deleting .vmd.cookies",
 	Run: func(cmd *cobra.Command, args []string) {
 		
 
@@ -47,6 +47,7 @@ var logoutCmd = &cobra.Command{
 		}
 		fmt.Println("Deleted all session cookies")
 	},
+	DisableFlagsInUseLine: true,
 }
 
 func init() {

@@ -39,8 +39,13 @@ var(
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
 	Use:   "download",
+	Aliases: []string{"d"},
 	Short: "Download file from VMware",
-	Long: ``,
+	Long: `Download one or more files
+
+Either VMD_USER and VMD_PASS environment variable must be set
+or the --user and --pass flags should be added`,
+	Example: downloadUsage,
 	Run: func(cmd *cobra.Command, args []string) {
 		validateCredentials(cmd)
 		validateOutputDir()

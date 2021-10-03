@@ -17,11 +17,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	// "fmt"
-	// "os"
-	"github.com/spf13/cobra"
+	"fmt"
 
-	// "github.com/spf13/viper"
+	"github.com/spf13/cobra"
 )
 
 var username string
@@ -32,11 +30,8 @@ var rootCmd = &cobra.Command{
 	Version: "0.0.1",
 	Use:   "vmd",
 	Short: "Download binaries from customerconnect.vmware.com",
-	Long: `vmd downloads binaries from customerconnect.vmware.com
-	
-Example usage:
-	vmd download -p vmware_tools -s vmtools -v 11.3.0 -f VMware-Tools-darwin-*.zip --acceptEula
-`,
+	Long: "vmd downloads binaries from customerconnect.vmware.com",
+	Example: fmt.Sprintf("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s", downloadUsage, getProductsUsage, getSubProductsUsage, getVersions, getFiles, getManifestExample),
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -46,40 +41,6 @@ func Execute() {
 }
 
 func init() {
-	// cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&username, "user", "", "Username used to authenticate [$VMD_USER]")
 	rootCmd.PersistentFlags().StringVar(&password, "pass", "", "Password used to authenticate [$VMD_PASS]")
-}
-
-// initConfig reads in config file and ENV variables if set.
-func initConfig() {
-// 	if cfgFile != "" {
-// 		// Use config file from the flag.
-// 		viper.SetConfigFile(cfgFile)
-// 	} else {
-// 		// Find home directory.
-// 		home, err := os.UserHomeDir()
-// 		cobra.CheckErr(err)
-
-// 		// Search config in home directory with name ".vmd" (without extension).
-// 		viper.AddConfigPath(home)
-// 		viper.SetConfigType("yaml")
-// 		viper.SetConfigName(".vmd")
-// 	}
-	// viper.SetEnvPrefix("vmd") // will be uppercased automatically
-	// viper.BindEnv("user")
-	// viper.BindEnv("password")
-	
-
-// 	viper.AutomaticEnv() // read in environment variables that match
-
-// 	// If a config file is found, read it in.
-// 	if err := viper.ReadInConfig(); err == nil {
-// 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-// 	}
 }

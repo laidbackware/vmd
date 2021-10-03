@@ -12,8 +12,8 @@ type Availability struct {
 }
 
 func ListFiles(slug, subProduct, version, username, password string) (data [][]string, availability Availability, err error) {
-	err = EnsureLogin(username, password)
-	if err != nil {return}
+	if err = EnsureLogin(username, password); err != nil {return}
+
 	var downloadGroup, productID string
 	downloadGroup, productID, err = authenticatedClient.GetDlgProduct(slug, subProduct, version)
 	if err != nil {return}

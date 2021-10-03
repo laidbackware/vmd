@@ -17,43 +17,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 
 	"github.com/laidbackware/vmd/api"
-	"github.com/laidbackware/vmd/presenters"
 	"github.com/spf13/cobra"
 )
 
-var version string
-
 // filesCmd represents the files command
-var filesCmd = &cobra.Command{
-	Use:   "files",
-	Aliases: []string{"f"},
-	Short: "List available files",
-	Long: `List available files of a version of a sub-product
+var eulaCmd = &cobra.Command{
+	Use:   "eula",
+	Aliases: []string{"e"},
+	Short: "Display the Eula of a product",
+	Long: `Display the eula of a version of a sub-product
 
 Either VMD_USER and VMD_PASS environment variable must be set
 or the --user and --pass flags should be added`,
 	Example: getFiles,
 	Run: func(cmd *cobra.Command, args []string) {
 		validateCredentials(cmd)
-		files, availability, err := api.ListFiles(slug, subProduct, version, username, password)
-		if err != nil {
-			handleErrors(err)
-		}
-		headings := []string{"Filename", "Size", "Build number", "Description"}
-
-		presenters.PrintEntitlement(availability.EulaAccepted, availability.EligibleToDownload)
-		presenters.RenderTable(headings, files)
+		eula, err := api.GetEula(slug, subProduct, version, username, password)
+		handleErrors(err)
+		fmt.Printf("Open the URL in your browser: %s\n", eula)
 	},
 }
 
 func init() {
-	getCmd.AddCommand(filesCmd)
-	filesCmd.Flags().StringVarP(&slug, "product", "p", "", "Product code")
-	filesCmd.Flags().StringVarP(&subProduct, "subproduct", "s", "", "Sub Product code")
-	filesCmd.Flags().StringVarP(&version, "version", "v", "", "Version string")
-	filesCmd.MarkFlagRequired("product")
-	filesCmd.MarkFlagRequired("sub-product")
-	filesCmd.MarkFlagRequired("version")
+	getCmd.AddCommand(eulaCmd)
+	eulaCmd.Flags().StringVarP(&slug, "product", "p", "", "Product code")
+	eulaCmd.Flags().StringVarP(&subProduct, "subproduct", "s", "", "Sub Product code")
+	eulaCmd.Flags().StringVarP(&version, "version", "v", "", "Version string")
+	eulaCmd.MarkFlagRequired("product")
+	eulaCmd.MarkFlagRequired("sub-product")
+	eulaCmd.MarkFlagRequired("version")
 }

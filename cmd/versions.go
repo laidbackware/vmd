@@ -28,13 +28,10 @@ var subProduct string
 // versionsCmd represents the versions command
 var versionsCmd = &cobra.Command{
 	Use:   "versions",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Aliases: []string{"v"},
+	Short: "List available versions",
+	Long: "List available versions of a sub-product",
+	Example: getVersions,
 	Run: func(cmd *cobra.Command, args []string) {
 		versionString, err := api.ListVersions(slug, subProduct)
 		if err != nil {
@@ -50,14 +47,4 @@ func init() {
 	versionsCmd.Flags().StringVarP(&subProduct, "subproduct", "s", "", "Sub Product code")
 	versionsCmd.MarkFlagRequired("product")
 	versionsCmd.MarkFlagRequired("sub-product")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// versionsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// versionsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
