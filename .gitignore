@@ -18,3 +18,4 @@
 tmp/*
 settings.json
 builds/*
+__debug_bin

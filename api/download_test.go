@@ -50,7 +50,7 @@ func TestFetchDownloadLinkNeedEula(t *testing.T) {
 
 func TestFetchDownloadLinkNotEntitled(t *testing.T) {
 	var downloadPayload []sdk.DownloadPayload
-	downloadPayload, err = FetchDownloadPayload("vmware_nsx_t_data_center", "nsx-t", "3.1.3", "nsx-unified-appliance-secondary-*.qcow2", testing_user, testing_pass, false)
+	downloadPayload, err = FetchDownloadPayload("vmware_nsx_t_data_center", "nsx-t", "3.1.3", "nsx-unified-appliance-secondary-*.qcow2", testing_user, testing_pass, true)
 	assert.ErrorIs(t, err, sdk.ErrorNotEntitled)
 	assert.Empty(t, downloadPayload, "Expected response to be empty")
 }

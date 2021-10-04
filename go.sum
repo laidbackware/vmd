@@ -233,6 +233,8 @@ github.com/laidbackware/vmware-download-sdk v0.0.0-20210920163619-c95ec2fef315 h
 github.com/laidbackware/vmware-download-sdk v0.0.0-20210920163619-c95ec2fef315/go.mod h1:oXUINbShbZy4/y7OMIjyhjMPYzvVFg5QvRq8Dck7s1U=
 github.com/laidbackware/vmware-download-sdk v0.0.0-20211003124744-407b61b8f026 h1:JbKB/oQUaecbty5wV1z/OrugIZwr2qbDgdbY8xopwRg=
 github.com/laidbackware/vmware-download-sdk v0.0.0-20211003124744-407b61b8f026/go.mod h1:oXUINbShbZy4/y7OMIjyhjMPYzvVFg5QvRq8Dck7s1U=
+github.com/laidbackware/vmware-download-sdk v0.0.0-20211004152325-e1b7eb16c537 h1:KidmypR1GRG/G+Hl9pUUtO9jj/UrL5edt/n2dmbXvtQ=
+github.com/laidbackware/vmware-download-sdk v0.0.0-20211004152325-e1b7eb16c537/go.mod h1:oXUINbShbZy4/y7OMIjyhjMPYzvVFg5QvRq8Dck7s1U=
 github.com/magiconair/properties v1.8.5 h1:b6kJs+EmPFMYGkow9GiUyCyOvIwYetYJ3fSaWak/Gls=
 github.com/magiconair/properties v1.8.5/go.mod h1:y3VJvCyxH9uVvJTWEGAELF3aiYNyPKd5NZ3oSwXrF60=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
