@@ -17,6 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
 
 	"github.com/laidbackware/vmd/api"
 	"github.com/laidbackware/vmd/presenters"
@@ -43,7 +44,8 @@ or the --user and --pass flags should be added`,
 		}
 		headings := []string{"Filename", "Size", "Build number", "Description"}
 
-		presenters.PrintEntitlement(availability.EulaAccepted, availability.EligibleToDownload)
+		fmt.Printf("\nEula Accepted:         %t\n", availability.EulaAccepted)
+		fmt.Printf("Eligable to Download:  %t\n\n", availability.EligibleToDownload)
 		presenters.RenderTable(headings, files)
 	},
 }

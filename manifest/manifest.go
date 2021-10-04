@@ -19,8 +19,8 @@ type ManifestSpec struct {
 }
 
 var (
-	ErrorFileDoesNotExist = errors.New("Manifest file does not exist")
-	ErrorInvalidSpec = errors.New("Manifest file has invalid section")
+	ErrorFileDoesNotExist = errors.New("manifest file does not exist")
+	ErrorInvalidSpec = errors.New("manifest file has invalid section")
 )
 
 func ProcessFile(manifestFile string) (downloads []ManifestSpec, err error) {
@@ -49,13 +49,14 @@ func ProcessFile(manifestFile string) (downloads []ManifestSpec, err error) {
 			if download == nil {
 				continue
 			}
+			
 			// break the loop in case of EOF
 			if errors.Is(err, io.EOF) {
 				err = nil
 				break
 			}
 			if err != nil {return}
-			// fmt.Printf("slug is '%s'\n", download.Slug)
+
 			err = ensureInitialised(*download, entry)
 			if err != nil {return}
 			entry++
@@ -66,14 +67,8 @@ func ProcessFile(manifestFile string) (downloads []ManifestSpec, err error) {
 
 func ensureInitialised(dl ManifestSpec, entry int) (err error) {
 	if (dl.Slug == "") || (dl.SubProduct == "") || (dl.Version == "") || (len(dl.FilenameGlobs) == 0) {
-		fmt.Printf("Manifest entry %d does not have the 4 required keys!\n", entry)
+		fmt.Fprintf(os.Stderr, "Manifest entry %d does not have the 4 required keys!\n", entry)
 		err = ErrorInvalidSpec
-	} else {
-		for _, glob := range dl.FilenameGlobs {
-			if !strings.Contains(glob, "*"){
-				fmt.Printf("Manifest entry %d has an invalid glob!\nAll lines must have a * in the place of version numbers", entry)
-			}
-		}
 	}
 	return
 }

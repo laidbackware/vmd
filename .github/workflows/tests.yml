@@ -1,0 +1,42 @@
+---
+name: test-bats
+
+on: [push, pull_request]
+
+env:
+  VMD_USER: ${{ secrets.VMD_USER }}
+  VMD_PASS: ${{ secrets.VMD_PASS }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.1
+
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    
+    - name: Run Golang Tests
+      run: go test -v ./...
+
+    - name: Setup BATS
+      run: |
+        set -e
+
+        if [ -n "$GITHUB_RUN_ID" ]; then
+            export GITHUB_API_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+        fi
+
+        git clone https://github.com/bats-core/bats-core.git && bats-core/install.sh $HOME
+    
+    - name: Run BATS Tests
+      run: |
+        export PATH=${PATH}:/home/runner/bin
+        bats test/bats
+

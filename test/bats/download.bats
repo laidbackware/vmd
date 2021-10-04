@@ -6,7 +6,7 @@ setup() {
   setup_command
   export_errors
   export_yamls
-  export TEMP_DIR="$(mktemp -d -p $BATS_TMPDIR bats.XXXXX)"
+  export TEMP_DIR="$(mktemp -dt bats.XXXXX)"
 }
 
 teardown() {
