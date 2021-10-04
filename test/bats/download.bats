@@ -126,7 +126,7 @@ teardown() {
   $VMD_CMD logout
   run $VMD_CMD download -p vmware_vsan -s esxi -v 7.* -f VMware-VMvisor-Installer-*.iso --accepteula
   echo $output
-  [[ "$output" == *"$ERRORAUTHENTICATIONFAILURE"* ]]
+  [[ "$output" == *"$ERRORNOTENTITLED"* ]]
   [ "$status" -eq 1 ]
 }
 
