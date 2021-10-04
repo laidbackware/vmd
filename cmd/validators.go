@@ -73,7 +73,7 @@ func validateDownloadFlags(cmd *cobra.Command) (manifestWorkflow bool) {
 		return
 	}
 	fmt.Fprintln(os.Stderr, "Incorrect usage!")
-	fmt.Fprintln(os.Stderr, "Either --filename should be passed")
+	fmt.Fprintln(os.Stderr, "Either --manifest should be passed")
 	fmt.Fprintf(os.Stderr, "or --product, --subproduct, --version and --filename should be passed\n\n")
 	cmd.Usage()
 	os.Exit(2)

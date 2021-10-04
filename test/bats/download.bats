@@ -122,6 +122,14 @@ teardown() {
   [ "$status" -eq 1 ]
 }
 
+@test "download when not entitled" {
+  $VMD_CMD logout
+  run $VMD_CMD download -p vmware_vsan -s esxi -v 7.* -f VMware-VMvisor-Installer-*.iso --accepteula
+  echo $output
+  [[ "$output" == *"$ERRORAUTHENTICATIONFAILURE"* ]]
+  [ "$status" -eq 1 ]
+}
+
 @test "download with invalid output directory" {
   run $VMD_CMD download -p vmware_tools -s vmtools -v 11.3.0 -f VMware-Tools-darwin-*.zip --accepteula -o /tmp/stilton/on/toast
   echo $output
