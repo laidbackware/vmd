@@ -7,5 +7,5 @@ env GOOS=linux GOARCH=amd64 go build -o ${SCRIPT_DIR}/builds/vmd-linux-v${VERSIO
 
 env GOOS=darwin GOARCH=amd64 go build -o ${SCRIPT_DIR}/builds/vmd-darwin-v${VERSION}
 
-# env GOOS=windows GOARCH=amd64 go build -o ${SCRIPT_DIR}/builds/vmd-windows-v${VERSION}.exe
+env GOOS=windows GOARCH=amd64 go build -o ${SCRIPT_DIR}/builds/vmd-windows-v${VERSION}.exe
 

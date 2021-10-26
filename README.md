@@ -32,11 +32,11 @@ To make it available to all users `sudo mv vmd-<os>-<version> /usr/local/bin/vmd
   # Display example manifest file
   vmd get manifestexample
 ```
-## Testing
+# Testing
 To run commands against source use `alias vmd="go run main.go`</br>
 Run go tests `go test ./...`</br>
 Run BATS tests `bats test/bats`
 
-## Development
+# Development
 Update the SDK `go get -u github.com/laidbackware/vmware-download-sdk`</br>
 Ensure that your IDE exports `VMD_USER` and `VMD_PASS` to be able to run tests and debug.

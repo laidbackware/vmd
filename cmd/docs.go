@@ -18,7 +18,7 @@ const (
   vmd get manifestexample`
 
 	downloadUsage = `  # Download the latest version of release 11 with a file matching the pattern
-  vmd download -p vmware_tools -s vmtools -v 11.* -f VMware-Tools-darwin-*.zip --acceptEula
+  vmd download -p vmware_tools -s vmtools -v 11.* -f VMware-Tools-darwin-*.zip --accepteula
 
   # Download files using a manifest file
   vmd download -m manifest.yml --accepteula`

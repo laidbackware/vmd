@@ -8,10 +8,10 @@ env:
   VMD_PASS: ${{ secrets.VMD_PASS }}
 
 jobs:
-  build:
+  tests:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set up Go
@@ -26,6 +26,7 @@ jobs:
       run: go test -v ./...
 
     - name: Setup BATS
+      if: runner.os != 'windows'
       run: |
         set -e
 
@@ -36,7 +37,11 @@ jobs:
         git clone https://github.com/bats-core/bats-core.git && bats-core/install.sh $HOME
     
     - name: Run BATS Tests
+      if: runner.os != 'windows'
+      with:
+        max_attempts: 3
       run: |
         export PATH=${PATH}:/home/runner/bin
         bats test/bats
+      
 
