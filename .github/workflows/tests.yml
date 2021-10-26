@@ -38,10 +38,9 @@ jobs:
     
     - name: Run BATS Tests
       if: runner.os != 'windows'
-      with:
-        max_attempts: 3
       run: |
         export PATH=${PATH}:/home/runner/bin
-        bats test/bats
+        # Retry hack to attempt test 3 times
+        bats test/bats || bats test/bats || bats test/bats
       
 
