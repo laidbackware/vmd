@@ -10,14 +10,15 @@ setup() {
 }
 
 teardown() {
-  # rm -rf "${TEMP_DIR}"
+  rm -rf "${TEMP_DIR}"
+  rm $HOME/vmd-downloads/VMware-Tools-darwin-11.3.0-*.zip
   echo ""
 }
 
 @test "download single file successfully to temp" {
   $VMD_CMD logout
   rm -f $TEMP_DIR/*
-  local cmd="$VMD_CMD download -p vmware_tools -s vmtools -v 11.3.0 -f VMware-Tools-darwin-*.zip --accepteula -o $TEMP_DIR"
+  local cmd="$VMD_CMD download -p vmware_horizon_clients -s cart+andrd_x8632 -v 2106 -f VMware-Horizon-Client-AndroidOS-x86-*-store.apk --accepteula -o $TEMP_DIR"
   echo $cmd
   run $cmd
   echo $output
@@ -26,7 +27,7 @@ teardown() {
   [[ "$output" == *"Download started to"* ]]
   [[ "$output" == *"Download finished"* ]]
   [ "$status" -eq 0 ]
-  [ -f $TEMP_DIR/VMware-Tools-darwin-*.zip ]
+  [ -f $TEMP_DIR/VMware-Horizon-Client-*.apk ]
 }
 
 @test "download single file successfully to user vmd-downloads" {

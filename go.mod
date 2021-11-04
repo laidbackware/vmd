@@ -6,7 +6,7 @@ require (
 	github.com/dustin/go-humanize v1.0.0
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
-	github.com/laidbackware/vmware-download-sdk v0.0.0-20211004152325-e1b7eb16c537
+	github.com/laidbackware/vmware-download-sdk v0.0.0-20211103135845-0c774de1d62d
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/orirawlings/persistent-cookiejar v0.3.0
 	github.com/spf13/cobra v1.2.1

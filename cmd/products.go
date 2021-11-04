@@ -37,7 +37,7 @@ var productsCmd = &cobra.Command{
 		if err != nil {
 			handleErrors(err)
 		}
-		headings := []string{"Product code", "Produce description"}
+		headings := []string{"Product code", "Product description"}
 		presenters.RenderTable(headings, products)
 	},
 }

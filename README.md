@@ -15,7 +15,7 @@ To make it available to all users `sudo mv vmd-<os>-<version> /usr/local/bin/vmd
   vmd download -p vmware_tools -s vmtools -v 11.* -f VMware-Tools-darwin-*.zip --accepteula
 
   # Download files using a manifest file
-  vmd download -m manifest.yml --accepteula
+  vmd download -m <filename>.yml --accepteula
 
   # List of available products
   vmd get products
@@ -32,8 +32,34 @@ To make it available to all users `sudo mv vmd-<os>-<version> /usr/local/bin/vmd
   # Display example manifest file
   vmd get manifestexample
 ```
+Example manifest to use with `vmd download -m <filename>.yml`
+```
+---
+# This section will download the latest version of vmware_tools
+# Each glob pattern will download a single file each
+product: vmware_tools
+subproduct: vmtools
+version: "*"
+filename_globs:
+        - "VMware-Tools-darwin-*.tar.gz"
+        - "VMware-Tools-darwin-*.zip"
+---
+# This section will download the latest minor release from major version 10
+# The single glob pattern will download 2 files
+product: vmware_tools
+subproduct: vmtools
+version: "10.*"
+filename_globs:
+        - "VMware-Tools-other-*"
+---
+```
+# Known Issues
+- When working in a shell if you add a * to the filename arguement of the download command and you are in a directory where a file matches the pattern, your shell will replace the * to pass in the full file name. This can be worked around by wrapping the file name in single quotes, or by defining the download in a manifest yaml.
+- Some products such as horizon will not return the latest version when only a glob is provided. This is because the product switched naming standards meaning it breaks the sort of the version.
+- Some product descriptions don't display fully. This is especially true for the horizon products as they are inconsistently named, meaning it's difficult to extract the version number without taking out part of the product name.
+
 # Testing
-To run commands against source use `alias vmd="go run main.go`</br>
+To run commands against source use `alias vmd="go run main.go"`</br>
 Run go tests `go test ./...`</br>
 Run BATS tests `bats test/bats`
 

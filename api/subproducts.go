@@ -8,7 +8,7 @@ import (
 )
 
 func ListSubProducts(slug string) (data [][]string, err error) {
-	var subProducts []sdk.SubProduct
+	var subProducts []sdk.SubProductDetails
 	subProducts, err = basicClient.GetSubProductsSlice(slug)
 	if err != nil {return}
 	for _, v := range subProducts {

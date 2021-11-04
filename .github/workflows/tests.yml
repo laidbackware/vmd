@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Run Golang Tests
-      run: go test -v ./...
+      run: go test -v ./... | go test -v ./...
 
     - name: Setup BATS
       if: runner.os != 'windows'

@@ -109,7 +109,7 @@ func init() {
 	downloadCmd.Flags().StringVarP(&slug, "product", "p", "", "Product code")
 	downloadCmd.Flags().StringVarP(&subProduct, "subproduct", "s", "", "Sub Product code")
 	downloadCmd.Flags().StringVarP(&version, "version", "v", "", "Version string. Can contain a glob.")
-	downloadCmd.Flags().StringVarP(&fileName, "filename", "f", "", "Filename string. Can contain one or more globs.")
+	downloadCmd.Flags().StringVarP(&fileName, "filename", "f", "", "Filename string. Can contain one or more globs. When using * wrap the text in single quotes.")
 	downloadCmd.Flags().StringVarP(&manifestFile, "manifest", "m", "", "Filename of the manifest containing details of what to download")
 	downloadCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Directory to download files to")
 	downloadCmd.Flags().BoolVarP(&acceptEula, "accepteula", "a", false, "Filename string")
