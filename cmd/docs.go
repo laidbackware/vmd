@@ -18,11 +18,11 @@ const (
   vmd get manifestexample`
 
 	downloadUsage = `  # Download the latest version of release 11 with a file matching the pattern
-# If using a * in the filename value, make sure to wrap the text in single quotes on linux/macos
+  # If using a * in the filename value, make sure to wrap the text in single quotes on linux/macos
   vmd download -p vmware_tools -s vmtools -v 11.* -f 'VMware-Tools-darwin-*.zip' --accepteula
 
   # Download files using a manifest file
-# Show an example manifest using 'vmd get manifestexample'
+  # Show an example manifest using 'vmd get manifestexample'
   vmd download -m manifest.yml --accepteula`
 )
 
