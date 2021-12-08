@@ -17,7 +17,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"crypto/md5"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -33,6 +35,7 @@ var(
 	fileName string
 	acceptEula bool
 	outputDir string
+	forceDownload bool
 )
 	
 
@@ -99,9 +102,44 @@ func downloadFiles(downloadPayloads []sdk.DownloadPayload) {
 			authorizedDownload, err := api.FetchDownloadLink(downloadPayload, username, password)
 			handleErrors(err)
 			authorizedDownload.FileName = filepath.Join(outputDir, authorizedDownload.FileName)
-			err = downloader.TriggerDownload(authorizedDownload)
-			handleErrors(err)
+			if forceDownload || checkToDownload(authorizedDownload.FileName, downloadPayload.Md5checksum){	
+				err = downloader.TriggerDownload(authorizedDownload)
+				handleErrors(err)
+			}
 		}
+}
+
+func checkToDownload(fileName string, expectedMD5 string) bool{
+	if fileExists(fileName){
+		fmt.Printf("Found file %s, calculating MD5 checksum to validate\n", fileName)
+		file, err := os.Open(fileName)
+		handleErrors(err)
+		defer file.Close()
+
+		// Create a hash instance and pass the file through it
+		hash := md5.New()
+		_, err = io.Copy(hash, file)
+		handleErrors(err)
+		// Usage for Sprintf needed as a standard string conversation broke some strings
+		calculatedMD5 := fmt.Sprintf("%x", hash.Sum(nil))
+
+		if expectedMD5 != calculatedMD5{
+			fmt.Printf("Expected checksum of [%s], but found [%s].\nAttempting to re-download.\n", expectedMD5, calculatedMD5)
+			return true
+		} else {
+			fmt.Println("Checksum validate completed successfully. No need to re-download.")
+			return false
+		}
+	}
+	return true
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+			return false
+	}
+	return !info.IsDir()
 }
 
 func init() {
@@ -113,4 +151,5 @@ func init() {
 	downloadCmd.Flags().StringVarP(&manifestFile, "manifest", "m", "", "Filename of the manifest containing details of what to download")
 	downloadCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Directory to download files to")
 	downloadCmd.Flags().BoolVarP(&acceptEula, "accepteula", "a", false, "Filename string")
+	downloadCmd.Flags().BoolVarP(&forceDownload, "forcedownload", "d", false, "(optional) Force a file to be re-downloaded even if it already exists")
 }

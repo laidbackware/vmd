@@ -27,7 +27,7 @@ var password string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Version: "0.2.1",
+	Version: "0.2.0",
 	Use:   "vmd",
 	Short: "Download binaries from customerconnect.vmware.com",
 	Long: "vmd downloads binaries from customerconnect.vmware.com",
