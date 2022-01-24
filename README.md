@@ -57,6 +57,7 @@ filename_globs:
 - When working in a shell if you add a * to the filename arguement of the download command and you are in a directory where a file matches the pattern, your shell will replace the * to pass in the full file name. This can be worked around by wrapping the file name in single quotes, or by defining the download in a manifest yaml.
 - Some products such as horizon will not return the latest version when only a glob is provided. This is because the product switched naming standards meaning it breaks the sort of the version.
 - Some product descriptions don't display fully. This is especially true for the horizon products as they are inconsistently named, meaning it's difficult to extract the version number without taking out part of the product name.
+- NSX-T currently does not work with a glob as the last charactor of the version. This is due to the sorting prioritising the LE versions of the product.
 
 # Testing
 To run commands against source use `alias vmd="go run main.go"`</br>
