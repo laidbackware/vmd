@@ -3,8 +3,8 @@ package api
 import (
 	"testing"
 
-	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/stretchr/testify/assert"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
 var testing_user = mustEnv("VMD_USER")

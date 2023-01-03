@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/laidbackware/vmware-download-sdk/sdk"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
-func handleErrors(err error){
+func handleErrors(err error) {
 	if err != nil {
 		if err == sdk.ErrorInvalidSlug {
 			fmt.Fprintln(os.Stderr, "Invalid slug provided")

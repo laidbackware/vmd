@@ -6,9 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/laidbackware/vmware-download-sdk/sdk"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 	"github.com/orirawlings/persistent-cookiejar"
-	// "github.com/spf13/viper"
 )
 
 var authenticatedClient *sdk.Client
@@ -21,7 +20,9 @@ func EnsureLogin(username, password string) (err error) {
 			Filename:              filepath.Join(homeDir(), ".vmd.cookies"),
 			PersistSessionCookies: true,
 		})
-		if err != nil {return}
+		if err != nil {
+			return
+		}
 		fmt.Println("Logging in...")
 		authenticatedClient, err = sdk.Login(username, password, jar)
 		if err == nil {
@@ -30,13 +31,15 @@ func EnsureLogin(username, password string) (err error) {
 	} else {
 		// If tokens are still valid leave existing authenticatedClient in place
 		err = authenticatedClient.CheckLoggedIn()
-		if err == nil {return}
+		if err == nil {
+			return
+		}
 
 		authenticatedClient, err = sdk.Login(username, password, jar)
 		if err == nil {
 			err = jar.Save()
 		}
-	} 
+	}
 	return
 }
 

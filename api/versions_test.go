@@ -3,10 +3,9 @@ package api
 import (
 	"testing"
 
-	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
 func TestGetVersions(t *testing.T) {

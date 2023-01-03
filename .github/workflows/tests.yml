@@ -17,13 +17,13 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17.1
+        go-version: 1.19.3
 
     - name: Checkout Code
       uses: actions/checkout@v2
-    
+
     - name: Run Golang Tests
-      run: (go test -v ./...) || (go test -v ./...) || (go test -v ./...) || (go test -v ./...)
+      run: go test -v ./...
 
     - name: Setup BATS
       if: runner.os != 'windows'
@@ -35,12 +35,10 @@ jobs:
         fi
 
         git clone https://github.com/bats-core/bats-core.git && bats-core/install.sh $HOME
-    
+
     - name: Run BATS Tests
       if: runner.os != 'windows'
       run: |
         export PATH=${PATH}:/home/runner/bin
         # Retry hack to attempt test 3 times
-        (bats test/bats) || (bats test/bats) || (bats test/bats) || (bats test/bats)
-      
-
+        bats test/bats

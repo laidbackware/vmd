@@ -1,4 +1,5 @@
 package downloader
+
 //  Credit https://golangcode.com/download-a-file-with-progress/
 
 import (
@@ -10,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/dustin/go-humanize"
-	"github.com/laidbackware/vmware-download-sdk/sdk"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
 var ErrorGeneric = errors.New("download: non 200 response")
