@@ -11,7 +11,7 @@ setup() {
 
 teardown() {
   rm -rf "${TEMP_DIR}"
-  rm $HOME/vmd-downloads/VMware-Tools-darwin-11.3.0-*.zip
+  rm -f $HOME/vmd-downloads/VMware-Tools-darwin-11.3.0-*.zip
   echo ""
 }
 

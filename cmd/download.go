@@ -26,24 +26,23 @@ import (
 	"github.com/laidbackware/vmd/api"
 	"github.com/laidbackware/vmd/downloader"
 	"github.com/laidbackware/vmd/manifest"
-	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/spf13/cobra"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
-var(
-	manifestFile string
-	fileName string
-	acceptEula bool
-	outputDir string
+var (
+	manifestFile  string
+	fileName      string
+	acceptEula    bool
+	outputDir     string
 	forceDownload bool
 )
-	
 
 // downloadCmd represents the download command
 var downloadCmd = &cobra.Command{
-	Use:   "download",
+	Use:     "download",
 	Aliases: []string{"d"},
-	Short: "Download file from VMware",
+	Short:   "Download file from VMware",
 	Long: `Download one or more files
 
 Either VMD_USER and VMD_PASS environment variable must be set
@@ -82,9 +81,9 @@ func downloadFromManifest() {
 	var allPayloads [][]sdk.DownloadPayload
 	for _, manifestSpec := range manifestArray {
 		for _, glob := range manifestSpec.FilenameGlobs {
-			fmt.Printf("Collecting download payload for [%s] [%s] [%s] [%s]\n", manifestSpec.Slug, manifestSpec.SubProduct, 
+			fmt.Printf("Collecting download payload for [%s] [%s] [%s] [%s]\n", manifestSpec.Slug, manifestSpec.SubProduct,
 				manifestSpec.Version, glob)
-			downloadPayloads, err := api.FetchDownloadPayload(manifestSpec.Slug, manifestSpec.SubProduct, manifestSpec.Version, 
+			downloadPayloads, err := api.FetchDownloadPayload(manifestSpec.Slug, manifestSpec.SubProduct, manifestSpec.Version,
 				glob, username, password, acceptEula)
 			handleErrors(err)
 			allPayloads = append(allPayloads, downloadPayloads)
@@ -98,19 +97,19 @@ func downloadFromManifest() {
 }
 
 func downloadFiles(downloadPayloads []sdk.DownloadPayload) {
-		for _, downloadPayload := range downloadPayloads {
-			authorizedDownload, err := api.FetchDownloadLink(downloadPayload, username, password)
+	for _, downloadPayload := range downloadPayloads {
+		authorizedDownload, err := api.FetchDownloadLink(downloadPayload, username, password)
+		handleErrors(err)
+		authorizedDownload.FileName = filepath.Join(outputDir, authorizedDownload.FileName)
+		if forceDownload || checkToDownload(authorizedDownload.FileName, downloadPayload.Md5checksum) {
+			err = downloader.TriggerDownload(authorizedDownload)
 			handleErrors(err)
-			authorizedDownload.FileName = filepath.Join(outputDir, authorizedDownload.FileName)
-			if forceDownload || checkToDownload(authorizedDownload.FileName, downloadPayload.Md5checksum){	
-				err = downloader.TriggerDownload(authorizedDownload)
-				handleErrors(err)
-			}
 		}
+	}
 }
 
-func checkToDownload(fileName string, expectedMD5 string) bool{
-	if fileExists(fileName){
+func checkToDownload(fileName string, expectedMD5 string) bool {
+	if fileExists(fileName) {
 		fmt.Printf("Found file %s, calculating MD5 checksum to validate\n", fileName)
 		file, err := os.Open(fileName)
 		handleErrors(err)
@@ -123,7 +122,7 @@ func checkToDownload(fileName string, expectedMD5 string) bool{
 		// Usage for Sprintf needed as a standard string conversation broke some strings
 		calculatedMD5 := fmt.Sprintf("%x", hash.Sum(nil))
 
-		if expectedMD5 != calculatedMD5{
+		if expectedMD5 != calculatedMD5 {
 			fmt.Printf("Expected checksum of [%s], but found [%s].\nAttempting to re-download.\n", expectedMD5, calculatedMD5)
 			return true
 		} else {
@@ -137,7 +136,7 @@ func checkToDownload(fileName string, expectedMD5 string) bool{
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
-			return false
+		return false
 	}
 	return !info.IsDir()
 }

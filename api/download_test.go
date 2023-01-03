@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/laidbackware/vmware-download-sdk/sdk"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 )
 
 func TestFetchDownloadLinkVersionGlob(t *testing.T) {
@@ -32,7 +32,6 @@ func TestFetchDownloadPayloadVersionGlobMultiple(t *testing.T) {
 	assert.NotEmpty(t, downloadPayload[0].DlgType, "Expected response not to be empty")
 	assert.Greater(t, len(downloadPayload), 3)
 }
-
 
 func TestFetchDownloadLinkInvalidVersion(t *testing.T) {
 	var downloadPayload []sdk.DownloadPayload
