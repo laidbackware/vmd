@@ -41,4 +41,4 @@ jobs:
       run: |
         export PATH=${PATH}:/home/runner/bin
         # Retry hack to attempt test 3 times
-       bats test/bats
+        bats test/bats

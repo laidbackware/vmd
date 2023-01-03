@@ -10,8 +10,9 @@ setup() {
 }
 
 teardown() {
-  rm -rf "${TEMP_DIR}"
-  rm -f $HOME/vmd-downloads/VMware-Tools-darwin-11.3.0-*.zip
+  rm -rf $TEMP_DIR
+  rm -f ${HOME}/vmd-downloads/VMware-Tools-*.zip
+  rm -f ${HOME}/vmd-downloads/nsx-lcp-*-le.zip
   echo ""
 }
 
@@ -150,7 +151,8 @@ teardown() {
 
 @test "download when not entitled" {
   $VMD_CMD logout
-  run $VMD_CMD download -p vmware_vsan -s esxi -v 7.* -f VMware-VMvisor-Installer-*.iso --accepteula
+  rm -f ${HOME}/vmd-downloads/VMware-VMvisor-Installer-.7*.iso
+  run $VMD_CMD download -p vmware_nsx -s nsx_le -v '4.*' -f nsx-lcp-*-le.zip --accepteula
   echo "$output"
   [[ "$output" == *"$ERRORNOTENTITLED"* ]]
   [ "$status" -eq 1 ]

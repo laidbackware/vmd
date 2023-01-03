@@ -8,7 +8,6 @@ import (
 
 	"github.com/vmware-labs/vmware-customer-connect-sdk/sdk"
 	"github.com/orirawlings/persistent-cookiejar"
-	// "github.com/spf13/viper"
 )
 
 var authenticatedClient *sdk.Client
