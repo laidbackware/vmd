@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run Golang Tests
-      run: (go test -v ./...) || (go test -v ./...) || (go test -v ./...) || (go test -v ./...)
+      run: go test -v ./...
 
     - name: Setup BATS
       if: runner.os != 'windows'
@@ -41,4 +41,4 @@ jobs:
       run: |
         export PATH=${PATH}:/home/runner/bin
         # Retry hack to attempt test 3 times
-        (bats test/bats) || (bats test/bats) || (bats test/bats) || (bats test/bats)
+       bats test/bats
