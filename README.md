@@ -1,4 +1,4 @@
-# <span style="color:red">**DEPRECATED - vmd is not vcc and can now be found [here](https://github.com/vmware-labs/vmware-customer-connect-cli)**</span>.
+# <span style="color:red">**THIS REPO IS DEPRECATED - `vmd` is now `vcc`, which can be found [here](https://github.com/vmware-labs/vmware-customer-connect-cli)**</span>.
 # vmd
 `vmd` is command line tool to download software from customerconnect.vmware.com.
 
